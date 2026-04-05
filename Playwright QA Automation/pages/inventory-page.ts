@@ -90,4 +90,43 @@ export class InventoryPage {
     console.log('InventoryPage.closeHamburgerMenu');
     await this.page.click('.bm-cross-button');
   }
+
+  // Dropdown methods
+  async selectSortOption(option: 'Name (A to Z)' | 'Name (Z to A)' | 'Price (low to high)' | 'Price (high to low)') {
+    console.log('InventoryPage.selectSortOption:', option);
+    await this.page.selectOption('.product_sort_container', this.getOptionValue(option));
+  }
+
+  private getOptionValue(option: string): string {
+    const optionMap: { [key: string]: string } = {
+      'Name (A to Z)': 'az',
+      'Name (Z to A)': 'za',
+      'Price (low to high)': 'lohi',
+      'Price (high to low)': 'hilo',
+    };
+    return optionMap[option] || '';
+  }
+
+  async getProductNames(): Promise<string[]> {
+    const nameLocators = await this.page.locator('.inventory_item_name').all();
+    const names: string[] = [];
+    for (const locator of nameLocators) {
+      const text = await locator.textContent();
+      if (text) names.push(text);
+    }
+    return names;
+  }
+
+  async getProductPrices(): Promise<number[]> {
+    const priceLocators = await this.page.locator('.inventory_item_price').all();
+    const prices: number[] = [];
+    for (const locator of priceLocators) {
+      const text = await locator.textContent();
+      if (text) {
+        const price = parseFloat(text.replace('$', ''));
+        prices.push(price);
+      }
+    }
+    return prices;
+  }
 }
