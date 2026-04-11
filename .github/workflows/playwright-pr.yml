@@ -1,0 +1,28 @@
+name: Playwright PR Tests
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  test:
+    name: Run Playwright tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        working-directory: Playwright QA Automation
+        run: npm install
+
+      - name: Run Playwright tests
+        working-directory: Playwright QA Automation
+        run: npm test
