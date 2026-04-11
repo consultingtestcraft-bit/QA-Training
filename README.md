@@ -1,95 +1,68 @@
-# QA-Training
+# QA Training - Playwright Automation
 
-Short description
-A lightweight QA / test-training project containing HTML-based exercises, demos and small TypeScript helpers for practicing manual and automated web QA tasks.
+This repository contains a Playwright-based QA automation project for practicing end-to-end web testing.
 
-Badges
-[![Languages](https://img.shields.io/badge/languages-HTML%20%2B%20TypeScript-blue)](https://github.com/consultingtestcraft-bit/QA-Training)  ![Repo size](https://img.shields.io/badge/size-small-lightgrey)
+## Overview
+The main content lives in the `Playwright QA Automation/` folder and includes:
+- Playwright test definitions under `tests/`
+- Playwright configuration in `playwright.config.ts`
+- Supporting page objects or helper pages in `pages/`
+- Generated test output under `playwright-report/`
 
-Overview
-This repository provides a collection of HTML pages and small TypeScript utilities intended for QA training: exploratory testing, accessibility checks, functional scenarios, and basic automation practice. The project is predominantly HTML (99.1%) with a small TypeScript component (0.9%).
+The root repository also includes `LICENSE` and a `test-results/` folder.
 
-Key features
-- Simple, self-contained HTML scenarios to practice manual testing.
-- Small TypeScript helpers/scripts for demonstrating DOM manipulation and event-driven bugs.
-- Examples for accessibility checks, form validation, and edge-case behaviors.
-- Easy to run locally — no heavy dependencies required.
+## Tech stack
+- Node.js / npm
+- Playwright (`@playwright/test`)
+- TypeScript support via Playwright
 
-Tech stack
-- HTML (primary)
-- TypeScript (minor)
-- Optional: Node.js/npm for local servers or building TypeScript
+## Getting started
 
-Getting started
+### Prerequisites
+- Node.js installed
+- npm available on your PATH
 
-Prerequisites
-- Modern web browser (Chrome, Firefox, Edge, Safari)
-- Optional (for TypeScript or local server): Node.js (>=14) and npm
+### Run the tests
+1. Open a terminal.
+2. Change into the project folder:
+   ```powershell
+   cd "Playwright QA Automation"
+   ```
+3. Install dependencies:
+   ```powershell
+   npm install
+   ```
+4. Run the default test suite:
+   ```powershell
+   npm test
+   ```
 
-Run locally — quick options
-Option A — Open directly
-1. Clone the repo or download the files.
-2. Open the main HTML file (for example, index.html or demo/index.html) in your browser.
+### Additional commands
+- Run tests in headed mode:
+  ```powershell
+  npm run test:headed
+  ```
+- Run tests in debug mode:
+  ```powershell
+  npm run test:debug
+  ```
 
-Option B — Simple local HTTP server (recommended)
-- Using Python:
-  - python3 -m http.server 8000
-  - Open http://localhost:8000 in your browser
-- Using npm serve:
-  - npm install -g serve
-  - serve -s . -l 8000
-  - Open http://localhost:8000
+> Always refer to the official Playwright test authoring guide when writing tests:
+> https://playwright.dev/docs/writing-tests
 
-Option C — If TypeScript needs building
-1. npm install
-2. npm run build   # build scripts may compile .ts -> .js
-3. npm run start   # if a dev server script exists
+## Project structure
+- `Playwright QA Automation/package.json` — test scripts and dependencies
+- `Playwright QA Automation/playwright.config.ts` — Playwright configuration
+- `Playwright QA Automation/tests/` — end-to-end test files
+- `Playwright QA Automation/pages/` — page object or helper modules
+- `Playwright QA Automation/playwright-report/` — generated HTML reports
+- `Playwright QA Automation/test-results/` — saved test artifacts and results
+- `LICENSE` — project license
 
-If the repository does not contain package.json or build scripts, you can skip Option C and treat TypeScript files as reference code or precompiled examples.
+## Contributing
+- Open an issue to propose improvements or new test scenarios.
+- Fork the repo and create a branch for your changes.
+- Submit a pull request with a clear description of the automation change.
 
-Suggested package.json scripts (optional)
-{
-  "scripts": {
-    "build": "tsc",
-    "start": "serve -s . -l 8000"
-  },
-  "devDependencies": {
-    "typescript": "^4.0.0",
-    "serve": "^14.0.0"
-  }
-}
-
-Project structure (example)
-- /index.html — main demo or landing page
-- /pages/ — additional scenario pages
-- /assets/ — images, styles, fonts
-- /src/ — TypeScript source files (if any)
-- /dist/ — compiled output (optional)
-- README.md — this file
-
-Testing and QA suggestions
-- Manual test checklist:
-  - Cross-browser rendering (Chrome, Firefox, Edge, Safari)
-  - Form validation and edge-case inputs
-  - Keyboard navigation and focus order
-  - Accessibility basics (aria attributes, labels, contrast)
-  - Responsive layout checks (mobile/tablet/desktop)
-- Automation practice:
-  - Use Playwright or Cypress to write simple end-to-end tests that navigate pages and assert expected behavior.
-  - Example test scenarios: form submission, validation messages, modal open/close, error handling.
-
-Contributing
-- Open an issue to propose a new scenario or bug fix.
-- Fork the repo, create a feature branch, and open a pull request.
-- Keep changes small and focused; include a short description of the QA scenario and steps to reproduce.
-
-License
-- This repository is licensed under the MIT License. See LICENSE for details.
-
-Notes for maintainers
-- If you want TypeScript compiled automatically, add a tsconfig.json and the build/start scripts shown above.
-- Consider adding a simple CI (GitHub Actions) to run basic link checks or linting.
-
-Contact
-Repository owner: consultingtestcraft-bit
-For questions or help: open an issue in this repository.
+## License
+This repository is licensed under the MIT License. See `LICENSE` for details.
