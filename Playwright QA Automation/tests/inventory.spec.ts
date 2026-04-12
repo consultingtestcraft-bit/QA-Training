@@ -28,6 +28,16 @@ test.describe('Inventory Page Tests', () => {
     ]);
   });
 
+  test('should add one item to the cart and validate cart badge updates to 1', async ({ page }) => {
+    const productName = 'Sauce Labs Backpack';
+
+    expect(await inventoryPage.getCartItemCount()).toBe(0);
+    await inventoryPage.addProductToCart(productName);
+
+    await inventoryPage.expectCartItemCount(1);
+    expect(await inventoryPage.getCartItemCount()).toBe(1);
+  });
+
   test('should add and remove item in cart', async ({ page }) => {
     const productName = 'Sauce Labs Backpack';
 
