@@ -51,6 +51,14 @@ export class InventoryPage {
     return countText ? Number(countText) : 0;
   }
 
+  async expectCartItemCount(count: number) {
+    if (count === 0) {
+      await expect(this.page.locator(this.shoppingCartBadge)).toBeHidden();
+    } else {
+      await expect(this.page.locator(this.shoppingCartBadge)).toHaveText(`${count}`);
+    }
+  }
+
   async goToCart() {
     await this.page.click(this.cartLink);
   }
