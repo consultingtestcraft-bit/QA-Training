@@ -86,6 +86,26 @@ test.describe('Inventory Page Tests', () => {
     expect(await inventoryPage.getCartItemCount()).toBe(4);
   });
 
+  test('should add fifth item to cart and validate cart badge updates to 5', async ({ page }) => {
+    const firstProduct = 'Sauce Labs Backpack';
+    const secondProduct = 'Sauce Labs Bike Light';
+    const thirdProduct = 'Sauce Labs Bolt T-Shirt';
+    const fourthProduct = 'Sauce Labs Fleece Jacket';
+    const fifthProduct = 'Sauce Labs Onesie';
+
+    expect(await inventoryPage.getCartItemCount()).toBe(0);
+
+    await inventoryPage.addProductToCart(firstProduct);
+    await inventoryPage.addProductToCart(secondProduct);
+    await inventoryPage.addProductToCart(thirdProduct);
+    await inventoryPage.addProductToCart(fourthProduct);
+    await inventoryPage.addProductToCart(fifthProduct);
+
+    await inventoryPage.expectCartItemCount(5);
+    await expect(page.locator('.shopping_cart_badge')).toHaveText('5');
+    expect(await inventoryPage.getCartItemCount()).toBe(5);
+  });
+
   test('should add and remove item in cart', async ({ page }) => {
     const productName = 'Sauce Labs Backpack';
 
