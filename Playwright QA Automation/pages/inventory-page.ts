@@ -83,6 +83,24 @@ export class InventoryPage {
     await aboutElement.click();
   }
 
+  async clickAllItems() {
+    console.log('InventoryPage.clickAllItems');
+    const allItemsElement = this.page.locator('.bm-menu-wrap').locator('text=All Items').first();
+    await allItemsElement.click();
+  }
+
+  async clickLogout() {
+    console.log('InventoryPage.clickLogout');
+    const logoutElement = this.page.locator('.bm-menu-wrap').locator('text=Logout').first();
+    await logoutElement.click();
+  }
+
+  async clickResetAppState() {
+    console.log('InventoryPage.clickResetAppState');
+    const resetElement = this.page.locator('.bm-menu-wrap').locator('text=Reset App State').first();
+    await resetElement.click();
+  }
+
   async isAboutMenuItemVisible(): Promise<boolean> {
     const aboutElement = this.page.locator('.bm-menu-wrap').locator('text=About');
     return await aboutElement.isVisible();
@@ -97,6 +115,10 @@ export class InventoryPage {
   async closeHamburgerMenu() {
     console.log('InventoryPage.closeHamburgerMenu');
     await this.page.click('.bm-cross-button');
+  }
+
+  async isOnAboutPage(): Promise<boolean> {
+    return this.page.url().includes('about');
   }
 
   // Dropdown methods

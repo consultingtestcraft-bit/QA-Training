@@ -48,4 +48,8 @@ export class LoginPage {
   async isOnInventoryPage(): Promise<boolean> {
     return this.page.url().includes('/inventory.html');
   }
+
+  async isOnLoginPage(): Promise<boolean> {
+    return this.page.url().includes('/index.html') || !this.page.url().includes('/inventory.html');
+  }
 }
