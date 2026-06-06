@@ -17,7 +17,7 @@ test.describe('Hamburger Menu Tests', () => {
   });
 
   test('should display hamburger menu when clicked', async ({ page }) => {
-    // Click on the hamburger menu
+    // Click on the hamburger menu Arjun
     await inventoryPage.clickHamburgerMenu();
 
     // Verify that the menu is displayed
