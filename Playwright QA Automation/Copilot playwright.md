@@ -116,7 +116,15 @@ Your current framework includes:
   ```
 - Run headed mode:
   ```bash
-  npm run test:headed
+  npx playwright test --headed
+  ```
+- Run a specific browser/project:
+  ```bash
+  npx playwright test --project=chromium
+  ```
+- Run only smoke-tagged tests:
+  ```bash
+  npx playwright test --grep @smoke
   ```
 - Open the HTML report:
   ```bash
