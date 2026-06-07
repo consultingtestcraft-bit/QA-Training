@@ -3,6 +3,9 @@
 ## Overview
 This file summarizes your existing Playwright automation framework and recommends industry-standard practices based on Playwright docs.
 
+We always follow the official Playwright documentation for the latest automation updates and best practices:
+https://playwright.dev/docs/writing-tests
+
 Your current framework includes:
 - `playwright.config.ts` for Playwright test configuration
 - `package.json` with Playwright test scripts
@@ -82,15 +85,22 @@ Your current framework includes:
 - Ensure each test logs in and operates independently from others
 
 ### 6. Improve configuration for stability
-- Add optional timeouts in `playwright.config.ts`
+- Add explicit timeouts in `playwright.config.ts` for reliable UI runs
   - `actionTimeout: 10000`
   - `navigationTimeout: 30000`
-- Add `trace: 'on-first-retry'` and `video: 'retain-on-failure'` for troubleshooting
+  - `expect: { timeout: 10000 }`
+- Add failure artifacts for debugging
+  - `trace: 'on-first-retry'`
+  - `video: 'retain-on-failure'`
+  - `screenshot: 'only-on-failure'`
+- Consider `testDir`, `workers`, and `retries` values that match your CI environment
 
 ### 7. Use the official Playwright test structure
-- Keep `tests/` for test suites, `pages/` for page objects, and `reports/` for artifacts
+- Keep `tests/` for business flows, `pages/` for page objects, and `reports/` for artifacts
 - Use descriptive test names and `describe` blocks
 - Organize selectors and helpers clearly inside page objects
+- Prefer `test.step()` for long flows and `expect.poll()` for dynamic UI conditions
+- Add test tags such as `@smoke`, `@regression`, and `@checkout` for better suite management
 
 ---
 
@@ -106,7 +116,15 @@ Your current framework includes:
   ```
 - Run headed mode:
   ```bash
-  npm run test:headed
+  npx playwright test --headed
+  ```
+- Run a specific browser/project:
+  ```bash
+  npx playwright test --project=chromium
+  ```
+- Run only smoke-tagged tests:
+  ```bash
+  npx playwright test --grep @smoke
   ```
 - Open the HTML report:
   ```bash
@@ -123,7 +141,9 @@ Your current framework includes:
 
 ## Suggested Next Enhancements
 
-1. Add a `session` fixture for reusing login state across tests.
+1. Add a reusable `fixtures.ts` or `auth.ts` helper for login/session state.
 2. Add a centralized `selectors.ts` or `base-page.ts` if more pages are added.
-3. Add smoke tests for login failure and nav flows.
-4. Add a README for `Playwright QA Automation` with framework overview and run instructions.
+3. Add smoke tests for login failure, cart, and checkout flows.
+4. Add CI-friendly settings for retries, screenshots, video, and trace retention.
+5. Remove or replace sample/demo tests that are not part of your real business coverage.
+6. Add a README for `Playwright QA Automation` with framework overview, test tagging, and run instructions.
