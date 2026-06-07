@@ -17,6 +17,7 @@ test.describe('Inventory Page Tests', () => {
   });
 
   test('should display inventory products', async ({ page }) => {
+    // Verify that the inventory page loads and all products are visible.
     expect(await inventoryPage.getProductCount()).toBeGreaterThan(0);
     await expect(page.locator('.inventory_item_name')).toHaveText([
       'Sauce Labs Backpack',
@@ -31,6 +32,7 @@ test.describe('Inventory Page Tests', () => {
   test('should add one item to the cart and validate cart badge updates to 1', async ({ page }) => {
     const productName = 'Sauce Labs Backpack';
 
+    // Confirm the cart starts empty before adding an item.
     expect(await inventoryPage.getCartItemCount()).toBe(0);
     await inventoryPage.addProductToCart(productName);
 
@@ -42,6 +44,7 @@ test.describe('Inventory Page Tests', () => {
     const firstProduct = 'Sauce Labs Backpack';
     const secondProduct = 'Sauce Labs Bike Light';
 
+    // Ensure the cart count is zero before adding multiple items.
     expect(await inventoryPage.getCartItemCount()).toBe(0);
 
     await inventoryPage.addProductToCart(firstProduct);
@@ -57,6 +60,7 @@ test.describe('Inventory Page Tests', () => {
     const secondProduct = 'Sauce Labs Bike Light';
     const thirdProduct = 'Sauce Labs Bolt T-Shirt';
 
+    // Verify the starting cart state before adding more products.
     expect(await inventoryPage.getCartItemCount()).toBe(0);
 
     await inventoryPage.addProductToCart(firstProduct);
@@ -74,6 +78,7 @@ test.describe('Inventory Page Tests', () => {
     const thirdProduct = 'Sauce Labs Bolt T-Shirt';
     const fourthProduct = 'Sauce Labs Fleece Jacket';
 
+    // Confirm the cart is empty before adding several items.
     expect(await inventoryPage.getCartItemCount()).toBe(0);
 
     await inventoryPage.addProductToCart(firstProduct);
@@ -93,6 +98,7 @@ test.describe('Inventory Page Tests', () => {
     const fourthProduct = 'Sauce Labs Fleece Jacket';
     const fifthProduct = 'Sauce Labs Onesie';
 
+    // Start with a clean cart to verify badge count increments correctly.
     expect(await inventoryPage.getCartItemCount()).toBe(0);
 
     await inventoryPage.addProductToCart(firstProduct);
@@ -114,6 +120,7 @@ test.describe('Inventory Page Tests', () => {
     const fifthProduct = 'Sauce Labs Onesie';
     const sixthProduct = 'Test.allTheThings() T-Shirt (Red)';
 
+    // Verify the cart badge remains at zero before adding the full set of products.
     expect(await inventoryPage.getCartItemCount()).toBe(0);
 
     await inventoryPage.addProductToCart(firstProduct);
@@ -131,6 +138,7 @@ test.describe('Inventory Page Tests', () => {
   test('should add and remove item in cart', async ({ page }) => {
     const productName = 'Sauce Labs Backpack';
 
+    // Verify the cart starts empty before adding and removing an item.
     expect(await inventoryPage.getCartItemCount()).toBe(0);
     await inventoryPage.addProductToCart(productName);
 
@@ -144,9 +152,41 @@ test.describe('Inventory Page Tests', () => {
   });
 
   test('should navigate to cart from inventory', async ({ page }) => {
+    // Add an item and open the cart to confirm the cart page loads.
     await inventoryPage.addProductToCart('Sauce Labs Backpack');
     await inventoryPage.goToCart();
     await expect(page).toHaveURL(/.*cart.html/);
     await expect(page.locator('.cart_item')).toBeVisible();
+  });
+
+  test('should complete checkout flow from product add to order placement', async ({ page }) => {
+    const productName = 'Sauce Labs Backpack';
+
+    // End-to-end checkout flow: add item, review cart, fill customer details, and place the order.
+    await inventoryPage.addProductToCart(productName);
+    await inventoryPage.expectCartItemCount(1);
+
+    await inventoryPage.goToCart();
+    await expect(page).toHaveURL(/.*cart.html/);
+    await expect(page.locator('.cart_item')).toBeVisible();
+    await expect(page.locator('.inventory_item_name')).toContainText(productName);
+
+    await page.click('[data-test="checkout"]');
+    await expect(page).toHaveURL(/.*checkout-step-one\.html/);
+
+    await page.fill('[data-test="firstName"]', 'John');
+    await page.fill('[data-test="lastName"]', 'Doe');
+    await page.fill('[data-test="postalCode"]', '560001');
+    await page.click('[data-test="continue"]');
+
+    await expect(page).toHaveURL(/.*checkout-step-two\.html/);
+    await expect(page.locator('.summary_info')).toBeVisible();
+    await expect(page.locator('[data-test="finish"]')).toBeVisible();
+
+    await page.click('[data-test="finish"]');
+
+    await expect(page).toHaveURL(/.*checkout-complete\.html/);
+    await expect(page.locator('.complete-header')).toHaveText('Thank you for your order!');
+    await expect(page.locator('[data-test="back-to-products"]')).toBeVisible();
   });
 });
