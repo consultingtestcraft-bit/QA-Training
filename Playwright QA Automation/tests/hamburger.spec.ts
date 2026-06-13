@@ -48,20 +48,13 @@ test.describe('Hamburger Menu Tests', () => {
   });
 
   test('should navigate to About page when About menu item is clicked', async ({ page }) => {
-    // Click on the hamburger menu
     await inventoryPage.clickHamburgerMenu();
 
-    // Verify About menu item is visible
     await expect(inventoryPage.isAboutMenuItemVisible()).resolves.toBe(true);
 
-    // Click About menu item - this navigates to external Sauce Labs page
-    await Promise.all([
-      page.waitForNavigation(),
-      inventoryPage.clickAbout(),
-    ]);
+    await inventoryPage.clickAbout();
 
-    // Verify that navigation happened to Sauce Labs
-    expect(page.url()).toContain('saucelabs.com');
+    await expect(page).toHaveURL(/saucelabs\.com/i, { timeout: 60000 });
   });
 
   test('should stay on inventory and clear cart when All Items is clicked', async ({ page }) => {
@@ -129,9 +122,6 @@ test.describe('Hamburger Menu Tests', () => {
     // Click Reset App State
     await inventoryPage.clickResetAppState();
 
-    // Close the menu to check cart state properly
-    await inventoryPage.closeHamburgerMenu();
-
     // Verify we are still on inventory page
     await expect(inventoryPage.isOnInventoryPage()).resolves.toBe(true);
 
@@ -141,23 +131,25 @@ test.describe('Hamburger Menu Tests', () => {
   });
 
   test('should close hamburger menu when close button is clicked', async ({ page }) => {
-    // Click on the hamburger menu
     await inventoryPage.clickHamburgerMenu();
 
-    // Verify menu is displayed
     expect(await inventoryPage.isHamburgerMenuDisplayed()).toBe(true);
 
-    // Verify close button exists
     const closeButton = page.locator('.bm-cross-button');
     await expect(closeButton).toBeVisible();
 
-    // Click close button
-    await closeButton.click();
+    await inventoryPage.closeHamburgerMenu();
 
-    // Wait a moment for the menu to close
-    await page.waitForTimeout(500);
-
-    // Verify we are still on inventory page
+    await expect(page.locator('.bm-menu-wrap')).toBeHidden();
     await expect(inventoryPage.isOnInventoryPage()).resolves.toBe(true);
+  });
+
+  test('should hide the menu after clicking All Items', async ({ page }) => {
+    await inventoryPage.clickHamburgerMenu();
+    expect(await inventoryPage.isHamburgerMenuDisplayed()).toBe(true);
+
+    await inventoryPage.clickAllItems();
+
+    await expect(page.locator('.bm-menu-wrap')).toBeHidden({ timeout: 10000 });
   });
 });

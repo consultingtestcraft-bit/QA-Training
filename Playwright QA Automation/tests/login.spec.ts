@@ -25,6 +25,20 @@ test.describe('Login Tests', () => {
     expect(await loginPage.isErrorMessageVisible()).toBe(true);
   });
 
+  test('should display the login page UI elements and guidance text', async ({ page }) => {
+    await expect(loginPage.isLogoVisible()).resolves.toBe(true);
+    await expect(loginPage.isUsernameInputVisible()).resolves.toBe(true);
+    await expect(loginPage.isPasswordInputVisible()).resolves.toBe(true);
+    await expect(loginPage.isLoginButtonVisible()).resolves.toBe(true);
+
+    const guidanceText = await loginPage.getGuidanceText();
+    expect(guidanceText).toContain('Accepted usernames are:');
+    expect(guidanceText).toContain('Password for all users:');
+    expect(guidanceText).toContain('secret_sauce');
+    await expect(page.locator('text=Accepted usernames are:')).toBeVisible();
+    await expect(page.locator('text=Password for all users:')).toBeVisible();
+  });
+
   // Add more tests for other users if needed
   test('should login with problem user', async ({ page }) => {
     await loginPage.login('problem_user', 'secret_sauce');
