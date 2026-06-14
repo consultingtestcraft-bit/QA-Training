@@ -76,29 +76,30 @@ export class InventoryPage {
     return await this.page.isVisible(this.sidebarMenu);
   }
 
+  private async clickSidebarItem(label: string) {
+    const item = this.page.locator('.bm-menu-wrap').locator(`text=${label}`).first();
+    await item.click();
+  }
+
   async clickAbout() {
     console.log('InventoryPage.clickAbout');
-    // Click the About link in the sidebar menu
-    const aboutElement = this.page.locator('.bm-menu-wrap').locator('text=About').first();
-    await aboutElement.click();
+    await this.clickSidebarItem('About');
   }
 
   async clickAllItems() {
     console.log('InventoryPage.clickAllItems');
-    const allItemsElement = this.page.locator('.bm-menu-wrap').locator('text=All Items').first();
-    await allItemsElement.click();
+    await this.clickSidebarItem('All Items');
+    await this.closeHamburgerMenu();
   }
 
   async clickLogout() {
     console.log('InventoryPage.clickLogout');
-    const logoutElement = this.page.locator('.bm-menu-wrap').locator('text=Logout').first();
-    await logoutElement.click();
+    await this.clickSidebarItem('Logout');
   }
 
   async clickResetAppState() {
     console.log('InventoryPage.clickResetAppState');
-    const resetElement = this.page.locator('.bm-menu-wrap').locator('text=Reset App State').first();
-    await resetElement.click();
+    await this.clickSidebarItem('Reset App State');
   }
 
   async isAboutMenuItemVisible(): Promise<boolean> {
